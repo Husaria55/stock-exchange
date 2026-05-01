@@ -13,7 +13,7 @@ import (
 )
 
 func setupTestDB(t *testing.T) *sql.DB {
-	dsn := "host=localhost port=5432 user=stockuser password=stockpassword dbname=stockexchange sslmode=disable"
+	dsn := "host=127.0.0.1 port=5432 user=stockuser password=stockpassword dbname=stockexchange sslmode=disable"
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		t.Fatalf("Failed to connect to test db: %v", err)

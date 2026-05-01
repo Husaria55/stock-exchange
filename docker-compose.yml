@@ -7,8 +7,10 @@ services:
       POSTGRES_USER: stockuser
       POSTGRES_PASSWORD: stockpassword
       POSTGRES_DB: stockexchange
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432" 
+      - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U stockuser -d stockexchange"]
       interval: 2s
