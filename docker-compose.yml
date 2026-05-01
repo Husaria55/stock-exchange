@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: stockuser
+      POSTGRES_PASSWORD: stockpassword
+      POSTGRES_DB: stockexchange
+    ports:
+      - "5432:5432" 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stockuser -d stockexchange"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    deploy:
+      replicas: 3 
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=stockuser
+      - DB_PASSWORD=stockpassword
+      - DB_NAME=stockexchange
+      - PORT=8080
+    depends_on:
+      db:
+        condition: service_healthy 
+    restart: always 
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8000:80" 
+    depends_on:
+      - api
