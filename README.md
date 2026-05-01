@@ -35,6 +35,17 @@ This boots Postgres, an Nginx load balancer, and 3 Go API replicas. The API inst
 
 Available at: `http://localhost:8000`
 
+
+### Make Commands
+
+| Command | Description |
+|---|---|
+| `make up` | Build and start all services (detached) |
+| `make down` | Stop and remove containers and volumes |
+| `make test` | Run all tests with race detection and integration tests enabled |
+| `make chaos` | Trigger chaos endpoint on the running API (`localhost:8000`) |
+| `make logs` | Tail API service logs |
+
 ## Assumptions & Clarifications
 
 - `POST /stocks` is a hard reset — existing inventory is zeroed before applying the new payload.
